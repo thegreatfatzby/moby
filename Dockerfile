@@ -215,6 +215,7 @@ RUN --mount=from=containerd-src,src=/usr/src/containerd,rw \
   set -e
   export CC=$(xx-info)-gcc
   export CGO_ENABLED=$([ "$DOCKER_STATIC" = "1" ] && echo "0" || echo "1")
+  export GODEBUG=1
   xx-go --wrap
   make $([ "$DOCKER_STATIC" = "1" ] && echo "STATIC=1") binaries
   xx-verify $([ "$DOCKER_STATIC" = "1" ] && echo "--static") bin/containerd
@@ -467,7 +468,7 @@ COPY --link --from=registry-v2   /build/ /usr/local/bin/
 # Skip the CRIU stage for now, as the opensuse package repository is sometimes
 # unstable, and we're currently not using it in CI.
 #
-# FIXME(thaJeztah): re-enable this stage when https://github.com/moby/moby/issues/38963 is resolved (see https://github.com/moby/moby/pull/38984)
+# FIXME(thaJeztah): re-enable this stage when f is resolved (see https://github.com/moby/moby/pull/38984)
 # COPY --link --from=criu          /build/ /usr/local/bin/
 COPY --link --from=gotestsum     /build/ /usr/local/bin/
 COPY --link --from=golangci_lint /build/ /usr/local/bin/

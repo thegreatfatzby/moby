@@ -17,6 +17,8 @@ export VALIDATE_ORIGIN_BRANCH
 export PAGER
 export GIT_PAGER
 
+export GODEBUG := 1
+
 # env vars passed through directly to Docker's build scripts
 # to allow things like `make KEEPBUNDLE=1 binary` easily
 # `project/PACKAGERS.md` have some limited documentation of some of these
@@ -82,7 +84,8 @@ DOCKER_ENVS := \
 	-e GIT_PAGER \
 	-e OTEL_EXPORTER_OTLP_ENDPOINT \
 	-e OTEL_EXPORTER_OTLP_PROTOCOL \
-	-e OTEL_SERVICE_NAME
+	-e OTEL_SERVICE_NAME \
+	-e GODEBUG
 # note: we _cannot_ add "-e DOCKER_BUILDTAGS" here because even if it's unset in the shell, that would shadow the "ENV DOCKER_BUILDTAGS" set in our Dockerfile, which is very important for our official builds
 
 # to allow `make BIND_DIR=. shell` or `make BIND_DIR= test`
@@ -120,7 +123,7 @@ DOCKER_IMAGE := docker-dev
 DOCKER_PORT_FORWARD := $(if $(DOCKER_PORT),-p "$(DOCKER_PORT)",)
 DELVE_PORT_FORWARD := $(if $(DELVE_PORT),-p "$(DELVE_PORT)",)
 
-DOCKER_FLAGS := $(DOCKER) run --rm --privileged $(DOCKER_CONTAINER_NAME) $(DOCKER_ENVS) $(DOCKER_MOUNT) $(DOCKER_PORT_FORWARD) $(DELVE_PORT_FORWARD)
+DOCKER_FLAGS := $(DOCKER) run --rm --privileged -p "127.0.0.1:3456:3456" -p "127.0.0.1:4567:4567" $(DOCKER_CONTAINER_NAME) $(DOCKER_ENVS) $(DOCKER_MOUNT) $(DOCKER_PORT_FORWARD) $(DELVE_PORT_FORWARD)
 
 SWAGGER_DOCS_PORT ?= 9000
 

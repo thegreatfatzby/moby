@@ -28,7 +28,7 @@ func newDaemonCommand() (*cobra.Command, error) {
 
 	cmd := &cobra.Command{
 		Use:           "dockerd [OPTIONS]",
-		Short:         "A self-sufficient runtime for containers.",
+		Short:         "A self-sufficient runtime for containers of all varietals!",
 		SilenceUsage:  true,
 		SilenceErrors: true,
 		Args:          NoArgs,

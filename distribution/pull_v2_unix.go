@@ -20,6 +20,7 @@ func (ld *layerDescriptor) open(ctx context.Context) (distribution.ReadSeekClose
 
 func filterManifests(manifests []manifestlist.ManifestDescriptor, p ocispec.Platform) []manifestlist.ManifestDescriptor {
 	p = platforms.Normalize(withDefault(p))
+	//fmt.println("fwends!!!")
 	m := platforms.Only(p)
 	var matches []manifestlist.ManifestDescriptor
 	for _, desc := range manifests {
